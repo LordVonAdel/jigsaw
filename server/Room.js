@@ -4,7 +4,7 @@ module.exports = class {
 
   constructor() {
     this.clients = [];
-    this.puzzle = new Puzzle();
+    this.puzzle = new Puzzle(this);
   }
 
   addClient(client) {

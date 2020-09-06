@@ -4,6 +4,7 @@ import { Viewport } from 'pixi-viewport';
 import PlayerProfile from './PlayerProfile';
 import Game from './Game';
 import Puzzle from './Puzzle';
+import Draggable from './Draggable';
 
 export default class World {
   
@@ -13,15 +14,13 @@ export default class World {
   private background: PIXI.TilingSprite;
   private outline: PIXI.Graphics;
   private app: PIXI.Application;
-  private game: Game;
   
-  public viewport: Viewport;
+  public game: Game;
+  public viewport: PIXI.Container;
   public puzzle: Puzzle;
 
   constructor(game: Game) {
     this.game = game;
-
-    this.puzzle = new Puzzle(this);
 
     this.app = new PIXI.Application();
     document.body.appendChild(this.app.view);
@@ -35,17 +34,10 @@ export default class World {
       this.game.network.sendMousePosition(point.x, point.y);
     });
 
-    this.viewport = new Viewport({
-      screenWidth: window.innerWidth,
-      screenHeight: window.innerHeight,
-      worldWidth: 1000,
-      worldHeight: 1000,
-
-      interaction: this.app.renderer.plugins.interaction // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
-    });
+    this.viewport = new Draggable();
 
     this.app.stage.addChild(this.viewport);
-    this.viewport.drag().wheel();
+    //this.viewport.drag().wheel();
 
     this.background = new PIXI.TilingSprite(
       PIXI.Texture.from("./img/background.jpg"),
@@ -57,6 +49,8 @@ export default class World {
     this.outline = new PIXI.Graphics();
     this.viewport.addChild(this.outline);
 
+    this.puzzle = new Puzzle(this);
+
     this.setWorldSize(1920, 1080);
     this.onWindowResize();
   }
@@ -64,9 +58,6 @@ export default class World {
   public setWorldSize(width: number, height: number): void {
     this.worldWidth = width;
     this.worldHeight = height;
-
-    this.viewport.worldWidth = width;
-    this.viewport.worldHeight = height;
 
     this.background.width = width * 2;
     this.background.height = height * 2;

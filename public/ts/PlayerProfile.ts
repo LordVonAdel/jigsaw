@@ -13,6 +13,7 @@ export default class PlayerProfile {
     this.color = 0xFFDAFF;
 
     this.cursorSprite = PIXI.Sprite.from("./img/cursor.png");
+    this.cursorSprite.interactive = false;
   }
 
   public get name(): string {

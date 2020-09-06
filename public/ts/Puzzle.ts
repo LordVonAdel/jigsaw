@@ -10,6 +10,7 @@ export default class Puzzle {
   private tilesV: number = 1;
   private pieces: Piece[];
   private world: World;
+  private container: PIXI.Container;
   
   public height: number;
   public width: number;
@@ -19,6 +20,9 @@ export default class Puzzle {
     this.chunks = [];
     this.pieces = [];
     this.world = world;
+
+    this.container = new PIXI.Container();
+    this.world.viewport.addChild(this.container);
   }
 
   public import(details: msgPuzzleDetails): void {
@@ -32,26 +36,38 @@ export default class Puzzle {
     this.texture = PIXI.Texture.from(details.texture);
     this.pieces.length = 0;
 
-    for (let y = 0; y < this.tilesV; y++) {
-      for (let x = 0; x < this.tilesH; x++) {
-        let piece = new Piece(this, y * this.tilesH + x, x, y);
-        this.pieces.push(piece);
-      }
+    for (let p of details.pieces) {
+      let piece = new Piece(this, p.id, p.cellX, p.cellY);
+      this.pieces.push(piece);
     }
 
     for (let c of details.chunks) {
-      let chunk = new Chunk();
+      let chunk = new Chunk(c.id, this.world.game);
+      this.chunks.push(chunk);
       chunk.setPosition(c.x, c.y);
 
       for (let piece of c.pieces) {
         chunk.addPiece(this.pieces[piece.id]);
       }
 
-      this.world.viewport.addChild(chunk.pixi);
+      this.container.addChild(chunk);
     }
 
     this.world.setWorldSize(this.width * 2, this.height * 2);
+  }
 
+  private getChunkById(id: number): Chunk {
+    for (let c of this.chunks) {
+      if (c.id == id) return c;
+    }
+    return null;
+  }
+
+  public setChunkPosition(id: number, x: number, y: number) {
+    let chunk = this.getChunkById(id);
+    if (!chunk) return false;
+
+    chunk.setPosition(x, y);
   }
 
   public get pieceWidth(): number {

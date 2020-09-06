@@ -13,7 +13,8 @@ module.exports = class {
     return {
       x: this.positionX,
       y: this.positionY,
-      pieces: this.pieces.map(p => p.export())
+      pieces: this.pieces.map(p => p.export()),
+      id: this.id
     }
   }
 

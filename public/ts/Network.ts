@@ -15,7 +15,14 @@ type msgPlayerId = {
 type msgChunk = {
   x: number,
   y: number,
-  pieces: msgPiece[]
+  pieces: msgPiece[],
+  id: number
+}
+
+type msgChunkMove = {
+  x: number,
+  y: number,
+  id: number
 }
 
 type msgPiece = {
@@ -32,7 +39,8 @@ export type msgPuzzleDetails = {
   width: number,
   height: number,
   texture: string,
-  chunks: msgChunk[]
+  chunks: msgChunk[],
+  pieces: msgPiece[]
 }
 
 export default class Network {
@@ -62,10 +70,22 @@ export default class Network {
     this.socket.on("puzzle:details", (data: msgPuzzleDetails) => {
       this.game.world.puzzle.import(data);
     });
+
+    this.socket.on("chunk:move", (data: msgChunkMove) => {
+      this.game.world.puzzle.setChunkPosition(data.id, data.x, data.y);
+    });
   }
 
   public sendMousePosition(x: number, y: number): void {
     this.socket.emit("move", {x, y});
+  }
+
+  public sendMoveChunk(id: number, x: number, y: number) {
+    this.socket.emit("chunk:move", {
+      x: x, 
+      y: y,
+      id: id
+    });
   }
 
 }

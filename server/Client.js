@@ -25,6 +25,13 @@ module.exports = class {
       this.room.puzzle.moveChunk(id, x, y);
     });
 
+    this.socket.on("chunk:drop", data => {
+      let id = data.id;
+      let x = data.x;
+      let y = data.y;
+      this.room.puzzle.dropChunk(id, x, y);
+    });
+
     this.socket.on("disconnect", reason => {
       console.log(reason);
       this.room.removeClient(this);

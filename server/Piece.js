@@ -23,4 +23,11 @@ module.exports = class Piece {
     }
   }
 
+  getPosition() {
+    return {
+      x: this.chunk.positionX + this.positionX,
+      y: this.chunk.positionY + this.positionY
+    }
+  }
+
 }

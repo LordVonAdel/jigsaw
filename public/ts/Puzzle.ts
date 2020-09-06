@@ -1,10 +1,9 @@
 import Chunk from "./Chunk";
-import { msgPuzzleDetails } from "./Network";
+import { msgPuzzleDetails, msgChunk } from "./Network";
 import Piece from "./Piece";
 import World from "./World";
 
 export default class Puzzle {
-
   private chunks: Chunk[];
   private tilesH: number = 1;
   private tilesV: number = 1;
@@ -38,6 +37,7 @@ export default class Puzzle {
 
     for (let p of details.pieces) {
       let piece = new Piece(this, p.id, p.cellX, p.cellY);
+      piece.setPosition(p.x, p.y);
       this.pieces.push(piece);
     }
 
@@ -63,11 +63,30 @@ export default class Puzzle {
     return null;
   }
 
-  public setChunkPosition(id: number, x: number, y: number) {
+  private getPieceById(id: number): Piece {
+    for (let p of this.pieces) {
+      if (p.id == id) return p;
+    }
+    return null;
+  }
+
+  public setChunkPosition(id: number, x: number, y: number): void {
     let chunk = this.getChunkById(id);
-    if (!chunk) return false;
+    if (!chunk) return;
 
     chunk.setPosition(x, y);
+  }
+
+  public updateChunk(data: msgChunk): void {
+    let chunk = this.getChunkById(data.id);
+    if (!chunk) return; 
+
+    chunk.setPosition(data.x, data.y);
+    for (let p of data.pieces) {
+      let piece = this.getPieceById(p.id);
+      piece.setPosition(p.x, p.y);
+      chunk.addPiece(piece);
+    }
   }
 
   public get pieceWidth(): number {

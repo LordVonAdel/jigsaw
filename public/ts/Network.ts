@@ -12,7 +12,7 @@ type msgPlayerId = {
   playerId: number
 }
 
-type msgChunk = {
+export type msgChunk = {
   x: number,
   y: number,
   pieces: msgPiece[],
@@ -74,6 +74,10 @@ export default class Network {
     this.socket.on("chunk:move", (data: msgChunkMove) => {
       this.game.world.puzzle.setChunkPosition(data.id, data.x, data.y);
     });
+
+    this.socket.on("chunk", (data: msgChunk) => {
+      this.game.world.puzzle.updateChunk(data);
+    });
   }
 
   public sendMousePosition(x: number, y: number): void {
@@ -82,6 +86,14 @@ export default class Network {
 
   public sendMoveChunk(id: number, x: number, y: number) {
     this.socket.emit("chunk:move", {
+      x: x, 
+      y: y,
+      id: id
+    });
+  }
+
+  public sendDropChunk(id: number, x: number, y: number) {
+    this.socket.emit("chunk:drop", {
       x: x, 
       y: y,
       id: id

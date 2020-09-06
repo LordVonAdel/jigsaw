@@ -12,7 +12,21 @@ module.exports = class {
     this.height = 937;
     this.texture = "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1371&q=80";
     this.room = room;
+    this.borders = [];
+    this.pieceWidth = this.width / this.tilesH;
+    this.pieceHeight = this.height / this.tilesV;
     this.generateChunks();
+    this.generateBorders();
+  }
+
+  generateBorders() {
+    for (let y = 0; y <= this.tilesV; y++) {
+      for (let x = 0; x <= this.tilesH; x++) {
+        /**
+         * @todo Generate border indices
+         */
+      }
+    }
   }
 
   generateChunks() {
@@ -27,7 +41,7 @@ module.exports = class {
         piece.cellY = y;
 
         this.pieces.push(piece);
-        let chunk = new Chunk();
+        let chunk = new Chunk(this);
         chunk.addPiece(piece);
         chunk.positionX = pieceWidth * x * 1.1;
         chunk.positionY = pieceHeight * y * 1.1;
@@ -66,7 +80,26 @@ module.exports = class {
       id: id,
       x: x,
       y: y
-    })
+    });
+  }
+
+  dropChunk(id, x, y) {
+    let chunk = this.getChunkById(id);
+    if (!chunk) return;
+    chunk.drop(x, y);
+
+    this.room.broadcast("chunk:move", {
+      id: id,
+      x: x,
+      y: y
+    });
+  }
+
+  getPiecesAtPosition(x1, y1) {
+    return this.pieces.filter(piece => {
+      let pos = piece.getPosition();
+      return (x1 >= pos.x && y1 >= pos.y && x1 < pos.x + this.pieceWidth && y1 < pos.y + this.pieceHeight);
+    });
   }
 
 }

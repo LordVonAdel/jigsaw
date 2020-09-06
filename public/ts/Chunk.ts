@@ -20,9 +20,10 @@ export default class Chunk extends Draggable {
     });
     this.on("dragend", () => {
       this.alpha = 1;
-      this.game.network.sendMoveChunk(this._id, this.position.x, this.position.y);
+      this.game.network.sendDropChunk(this._id, this.position.x, this.position.y);
     });
     this.on("dragged", () => {
+      //this.game.network.sendMoveChunk(this._id, this.position.x, this.position.y);
     });
   }
 

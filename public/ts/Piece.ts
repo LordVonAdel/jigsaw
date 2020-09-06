@@ -3,7 +3,7 @@ import Puzzle from "./Puzzle";
 export default class Piece {
   
   private mask: PIXI.Graphics;
-  private id: number;
+  private _id: number;
   private cellX: number;
   private cellY: number;
 
@@ -29,7 +29,15 @@ export default class Piece {
     this.sprite.mask = this.mask;
     this.sprite.addChild(this.mask);
 
-    this.id = id;
+    this._id = id;
+  }
+
+  public get id(): number {
+    return this._id;
+  }
+
+  public setPosition(x: number, y: number): void {
+    this.sprite.position.set(x, y);
   }
 
 }

@@ -65,7 +65,7 @@ export default class World {
     this.background.y = -height / 2;
 
     this.outline.clear();
-    this.outline.lineStyle(2, 0xFF0000);
+    this.outline.lineStyle(2, 0xFFFFFF);
     this.outline.moveTo(0, 0);
     this.outline.lineTo(width, 0);
     this.outline.lineTo(width, height);

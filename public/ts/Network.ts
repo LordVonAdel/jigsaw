@@ -40,7 +40,8 @@ export type msgPuzzleDetails = {
   height: number,
   texture: string,
   chunks: msgChunk[],
-  pieces: msgPiece[]
+  pieces: msgPiece[],
+  sawStyles: number[]
 }
 
 export default class Network {

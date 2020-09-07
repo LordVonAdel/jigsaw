@@ -5,12 +5,13 @@ import World from "./World";
 
 export default class Puzzle {
   private chunks: Chunk[];
-  private tilesH: number = 1;
-  private tilesV: number = 1;
   private pieces: Piece[];
   private world: World;
   private container: PIXI.Container;
+  private sawStyles: number[];
   
+  public tilesH: number = 1;
+  public tilesV: number = 1;
   public height: number;
   public width: number;
   public texture: PIXI.Texture;
@@ -25,12 +26,16 @@ export default class Puzzle {
   }
 
   public import(details: msgPuzzleDetails): void {
+    this.clear();
+
     console.log("Importing puzzle: ", details);
 
     this.tilesH = details.tilesH;
     this.tilesV = details.tilesV;
     this.width = details.width;
     this.height = details.height;
+
+    this.sawStyles = details.sawStyles;
 
     this.texture = PIXI.Texture.from(details.texture);
     this.pieces.length = 0;
@@ -95,6 +100,16 @@ export default class Puzzle {
 
   public get pieceHeight(): number {
     return this.height / this.tilesV;
+  }
+
+  public getSawStyle(x: number, y: number, vertical: number): number {
+    return this.sawStyles[x + this.tilesH * y + vertical * this.tilesH * this.tilesV];
+  }
+
+  private clear() {
+    this.container.removeChildren();
+    this.pieces.length = 0;
+    this.chunks.length = 0;
   }
 
 }

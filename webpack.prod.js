@@ -1,7 +1,7 @@
-const path = require('path');
+var path = require('path')
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: "./public/ts/index.ts",
   module: {
     rules: [
@@ -9,7 +9,7 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      },
+      }
     ],
   },
   resolve: {
@@ -18,9 +18,5 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, "public"),
-  },
-  externals: {
-    'pixi.js': 'PIXI'
-  },
-  devtool: "eval-source-map"
+  }
 };

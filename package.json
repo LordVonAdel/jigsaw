@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack --open --config webpack.dev.js",
+    "build-prod": "webpack --open --config webpack.prod.js"
   },
   "author": "LordVonAdel",
   "license": "ISC",

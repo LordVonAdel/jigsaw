@@ -13,7 +13,6 @@
   "dependencies": {
     "@types/socket.io-client": "^1.4.33",
     "express": "^4.17.1",
-    "pixi-viewport": "^4.13.2",
     "pixi.js": "^5.3.3",
     "socket.io": "^2.3.0"
   },

@@ -10,7 +10,8 @@ module.exports = class {
     this.tilesH = 16;
     this.width = 1371;
     this.height = 937;
-    this.texture = "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1371&q=80";
+    //this.texture = "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1371&q=80";
+    this.texture = "https://images.unsplash.com/photo-1542051841857-5f90071e7989?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
     this.room = room;
     this.sawStyles = [];
     this.pieceWidth = this.width / this.tilesH;

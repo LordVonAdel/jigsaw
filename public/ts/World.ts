@@ -1,6 +1,5 @@
 import Chunk from './Chunk';
 import * as PIXI from 'pixi.js';
-import { Viewport } from 'pixi-viewport';
 import PlayerProfile from './PlayerProfile';
 import Game from './Game';
 import Puzzle from './Puzzle';
@@ -14,6 +13,7 @@ export default class World {
   private background: PIXI.TilingSprite;
   private outline: PIXI.Graphics;
   private app: PIXI.Application;
+  private mousePosition: PIXI.Point;
   
   public game: Game;
   public viewport: PIXI.Container;
@@ -30,8 +30,17 @@ export default class World {
     });
 
     document.addEventListener("mousemove", (e) => {
-      let point = this.app.renderer.plugins.interaction.mouse.getLocalPosition(this.viewport) as PIXI.Point;
-      this.game.network.sendMousePosition(point.x, point.y);
+      this.mousePosition = this.app.renderer.plugins.interaction.mouse.getLocalPosition(this.viewport) as PIXI.Point;
+      this.game.network.sendMousePosition(this.mousePosition.x, this.mousePosition.y);
+    });
+
+    document.addEventListener("wheel", e => {
+      if (e.deltaY > 0) { // Zoom in
+        this.zoom(this.mousePosition, 0.9);
+      } else { // Zoom out
+        this.zoom(this.mousePosition, 1.1);
+      }
+      
     });
 
     this.viewport = new Draggable();
@@ -53,6 +62,12 @@ export default class World {
 
     this.setWorldSize(1920, 1080);
     this.onWindowResize();
+  }
+
+  public zoom(origin: PIXI.Point, amount: number) {
+    //this.viewport.pivot.set(origin.x, origin.y);
+    this.viewport.scale.x *= amount;
+    this.viewport.scale.y *= amount;
   }
 
   public setWorldSize(width: number, height: number): void {

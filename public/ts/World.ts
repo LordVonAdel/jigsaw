@@ -65,9 +65,15 @@ export default class World {
   }
 
   public zoom(origin: PIXI.Point, amount: number) {
-    //this.viewport.pivot.set(origin.x, origin.y);
+    let w = this.viewport.width;
+    let h = this.viewport.height;
     this.viewport.scale.x *= amount;
     this.viewport.scale.y *= amount;
+    let deltaW = this.viewport.width - w;
+    let deltaH = this.viewport.height - h;
+
+    this.viewport.position.x -= deltaW / 2;
+    this.viewport.position.y -= deltaH / 2;
   }
 
   public setWorldSize(width: number, height: number): void {
